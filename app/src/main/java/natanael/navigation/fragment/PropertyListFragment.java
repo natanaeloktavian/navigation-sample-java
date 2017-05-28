@@ -9,11 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import io.realm.RealmResults;
 import natanael.navigation.R;
 import natanael.navigation.activity.DrawerActivity;
 import natanael.navigation.adapter.PropertyAdapter;
@@ -21,6 +24,7 @@ import natanael.navigation.model.Property;
 import natanael.navigation.model.RecyclerItemClickListener;
 import natanael.navigation.presenter.IPropertyListPresenter;
 import natanael.navigation.presenter.PropertyListPresenter;
+import natanael.navigation.realm.RealmController;
 import natanael.navigation.repository.PropertyListRepository;
 import natanael.navigation.view.IPropertyListView;
 
@@ -66,7 +70,9 @@ public class PropertyListFragment extends Fragment implements IPropertyListView
 
     private void initialize()
     {
-        //showDialog();
+        showDialog();
+
+        loadFromLocalDatabase();
         mPresenter = new PropertyListPresenter(this, new PropertyListRepository());
         mPresenter.loadListings(city);
     }
@@ -106,13 +112,16 @@ public class PropertyListFragment extends Fragment implements IPropertyListView
     @Override
     public void onDataLoaded(ArrayList<Property> properties)
     {
-        //hideDialog();
+        hideDialog();
         if(properties!=null)
         {
             //Toast.makeText(getContext(), "Loaded " + properties.size() + " items", Toast.LENGTH_SHORT).show();
             mPropertyAdapter = new PropertyAdapter(getContext(), properties);
             if (mRecyclerView != null)
                 this.initializeRecyclerView(mRecyclerView, mPropertyAdapter);
+
+            RealmController.with(this).setCity(properties,city);
+            RealmController.with(this).insertProperties(properties);
         }
     }
 
@@ -130,7 +139,21 @@ public class PropertyListFragment extends Fragment implements IPropertyListView
     @Override
     public void onFailure(String message)
     {
+        Toast.makeText(getActivity(),"Failed to load from internet, loading data from local database",Toast.LENGTH_SHORT).show();
+        loadFromLocalDatabase();
+    }
 
+    protected void loadFromLocalDatabase()
+    {
+        ArrayList<Property> properties = new ArrayList<>();
+        RealmResults<Property> results = RealmController.with(this).getPropertiesInCity(city);
+        Iterator<Property> iterator = results.iterator();
+        while (iterator.hasNext())
+        {
+            Property property = iterator.next();
+            properties.add(property);
+        }
+        this.onDataLoaded(properties);
     }
 
     private void showDialog()

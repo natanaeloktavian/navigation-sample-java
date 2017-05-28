@@ -10,10 +10,13 @@ public class AppConfig
 {
     public static void loadImage(Context context, ImageView imageView, String url)
     {
-        Glide.with(context).load(url)
-                .thumbnail(0.5f)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
+        if(context!=null && imageView!=null && url!=null)
+        {
+            Glide.with(context).load(url)
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageView);
+        }
     }
 }

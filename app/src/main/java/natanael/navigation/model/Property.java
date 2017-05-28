@@ -2,7 +2,10 @@ package natanael.navigation.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Property
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Property extends RealmObject
 {
     @SerializedName("bathroom_number")
     private String bathroomNumber;
@@ -19,11 +22,19 @@ public class Property
     @SerializedName("price")
     private String price;
 
+    private String city;
+
+    @PrimaryKey
     @SerializedName("title")
     private String title;
 
     @SerializedName("summary")
     private String summary;
+
+    public Property()
+    {
+
+    }
 
     public String getBathroomNumber()
     {
@@ -93,5 +104,15 @@ public class Property
     public void setSummary(String summary)
     {
         this.summary = summary;
+    }
+
+    public String getCity()
+    {
+        return city;
+    }
+
+    public void setCity(String city)
+    {
+        this.city = city;
     }
 }
