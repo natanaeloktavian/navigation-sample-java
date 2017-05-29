@@ -14,6 +14,8 @@ import com.google.gson.Gson;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
+import java.util.HashMap;
+
 import natanael.navigation.R;
 import natanael.navigation.app.AppConfig;
 import natanael.navigation.model.Property;
@@ -72,6 +74,11 @@ public class PropertyDetailActivity extends AppCompatActivity
                 summaryLabel.setText(property.getSummary());
             if (toolbarImage != null)
                 AppConfig.loadImage(getApplicationContext(), toolbarImage, property.getImgUrl());
+
+            HashMap<String,String> props = new HashMap<>();
+            props.put("Title",property.getTitle());
+            props.put("City",property.getCity());
+            AppConfig.sendEvent(getApplicationContext(),"Opened Property Detail",props);
         }
     }
 }

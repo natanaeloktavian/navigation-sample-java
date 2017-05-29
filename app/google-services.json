@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "473403472463",
+    "firebase_url": "https://navigation-7c9fe.firebaseio.com",
+    "project_id": "navigation-7c9fe",
+    "storage_bucket": "navigation-7c9fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473403472463:android:a82e27cf4dad79ad",
+        "android_client_info": {
+          "package_name": "natanael.navigation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473403472463-8g4jji0e5id2ao5rr00ri37mkfg2btuj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuwfxqurStyz0r4NtfeJ9VRHXWoxB-dm0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
