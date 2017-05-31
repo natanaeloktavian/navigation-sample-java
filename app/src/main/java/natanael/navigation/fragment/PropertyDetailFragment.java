@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
+import java.util.HashMap;
+
 import natanael.navigation.R;
 import natanael.navigation.activity.DrawerActivity;
 import natanael.navigation.app.AppConfig;
@@ -70,6 +72,11 @@ public class PropertyDetailFragment extends Fragment
                 titleLabel.setText(property.getTitle());
             if(summaryLabel!=null)
                 summaryLabel.setText(property.getSummary());
+
+            HashMap<String,String> props = new HashMap<>();
+            props.put("Title",property.getTitle());
+            props.put("City",property.getCity());
+            AppConfig.sendEvent(getActivity(),"Opened Property Detail",props);
         }
     }
 
