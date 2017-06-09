@@ -16,10 +16,13 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.inject.Inject;
+
 import io.realm.RealmResults;
 import natanael.navigation.R;
 import natanael.navigation.activity.DrawerActivity;
 import natanael.navigation.adapter.PropertyAdapter;
+import natanael.navigation.app.MyApplication;
 import natanael.navigation.model.Property;
 import natanael.navigation.model.RecyclerItemClickListener;
 import natanael.navigation.presenter.IPropertyListPresenter;
@@ -27,9 +30,12 @@ import natanael.navigation.presenter.PropertyListPresenter;
 import natanael.navigation.realm.RealmController;
 import natanael.navigation.repository.PropertyListRepository;
 import natanael.navigation.view.IPropertyListView;
+import retrofit2.Retrofit;
 
 public class PropertyListFragment extends Fragment implements IPropertyListView
 {
+    @Inject Retrofit mRetrofit;
+
     private IPropertyListPresenter mPresenter;
     private PropertyAdapter mPropertyAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -72,8 +78,10 @@ public class PropertyListFragment extends Fragment implements IPropertyListView
     {
         showDialog();
 
+        ((MyApplication)getActivity().getApplication()).getRetrofitComponent().inject(this);
+
         loadFromLocalDatabase();
-        mPresenter = new PropertyListPresenter(this, new PropertyListRepository());
+        mPresenter = new PropertyListPresenter(this, new PropertyListRepository(mRetrofit));
         mPresenter.loadListings(city);
     }
 
@@ -139,8 +147,7 @@ public class PropertyListFragment extends Fragment implements IPropertyListView
     @Override
     public void onFailure(String message)
     {
-        Toast.makeText(getActivity(),"Failed to load from internet, loading data from local database",Toast.LENGTH_SHORT).show();
-        loadFromLocalDatabase();
+        Toast.makeText(getActivity(),"Failed to load from internet, data is shown from local database",Toast.LENGTH_SHORT).show();
     }
 
     protected void loadFromLocalDatabase()
